@@ -5,11 +5,11 @@ import album4 from "@/assets/album-4.jpg";
 
 const Marketplace = () => {
   const albums = [
-    { id: 1, image: album3, genre: "Indie" },
-    { id: 2, image: album1, genre: "Pop" },
-    { id: 3, image: album1, genre: "Featured" },
-    { id: 4, image: album2, genre: "Rock" },
-    { id: 5, image: album4, genre: "Electronic" },
+    { id: 1, image: album3, genre: "Indie", rotation: -5 },
+    { id: 2, image: album1, genre: "Pop", rotation: 3 },
+    { id: 3, image: album1, genre: "Featured", rotation: 0, scale: 1.2, zIndex: 10 },
+    { id: 4, image: album2, genre: "Rock", rotation: -3 },
+    { id: 5, image: album4, genre: "Electronic", rotation: 5 },
   ];
 
   return (
@@ -17,37 +17,36 @@ const Marketplace = () => {
       <div className="absolute inset-0 bg-gradient-to-b from-background via-muted/20 to-background"></div>
       
       <div className="container mx-auto px-6 relative z-10">
-        <h2 className="font-clash font-bold text-4xl md:text-6xl lg:text-7xl text-center mb-20 leading-tight text-muted-foreground/80">
+        <h2 className="font-clash font-bold text-4xl md:text-6xl lg:text-7xl text-center mb-16 leading-tight text-muted-foreground/80">
           Marketplace for
           <br />
           song use blockchain
         </h2>
 
-        <div className="flex items-center justify-center gap-6 md:gap-8 flex-wrap max-w-6xl mx-auto">
+        <div className="relative h-[400px] md:h-[500px] flex items-center justify-center">
           {albums.map((album, index) => (
             <div
               key={album.id}
-              className="group cursor-pointer animate-fade-in"
+              className="absolute transition-all duration-500 hover:scale-110 hover:rotate-0 cursor-pointer group"
               style={{
-                animationDelay: `${index * 0.1}s`,
-                animationFillMode: "backwards"
+                transform: `rotate(${album.rotation}deg) scale(${album.scale || 1})`,
+                zIndex: album.zIndex || index,
+                left: `${15 + index * 15}%`,
               }}
             >
-              <div className="relative transition-all duration-500 hover:scale-110 hover:-translate-y-2">
+              <div className="relative">
                 <img
                   src={album.image}
                   alt={`${album.genre} album cover`}
-                  className="w-40 h-40 md:w-56 md:h-56 lg:w-64 lg:h-64 rounded-xl shadow-2xl shadow-secondary/30 group-hover:shadow-secondary/60 group-hover:shadow-glow transition-all"
+                  className="w-48 md:w-64 h-48 md:h-64 rounded-lg shadow-2xl shadow-secondary/30 group-hover:shadow-secondary/60 transition-shadow"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                  <div className="absolute bottom-4 left-4 right-4">
-                    <span className="text-xs md:text-sm font-clash font-semibold tracking-wider text-white block">
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent rounded-lg opacity-0 group-hover:opacity-100 transition-opacity">
+                  <div className="absolute bottom-4 left-4 text-white">
+                    <span className="text-xs font-clash font-semibold tracking-wider">
                       {album.genre}
                     </span>
                   </div>
                 </div>
-                {/* Glow effect on hover */}
-                <div className="absolute inset-0 rounded-xl bg-gradient-to-t from-secondary/50 to-transparent opacity-0 group-hover:opacity-20 blur-xl transition-opacity duration-300 -z-10"></div>
               </div>
             </div>
           ))}
@@ -55,7 +54,7 @@ const Marketplace = () => {
       </div>
 
       {/* Decorative glow */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-secondary/10 rounded-full blur-3xl animate-pulse-slow pointer-events-none"></div>
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-secondary/10 rounded-full blur-3xl animate-pulse-slow pointer-events-none"></div>
     </section>
   );
 };
