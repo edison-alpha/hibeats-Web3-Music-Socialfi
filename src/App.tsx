@@ -2,7 +2,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { AuthProvider, useAuth } from "@/contexts/AuthContext";
 import { AudioProvider } from "@/contexts/AudioContext";
 import AudioPlayer from "@/components/AudioPlayer";
@@ -27,6 +27,9 @@ import ProfileCreation from "./components/ProfileCreation";
 const queryClient = new QueryClient();
 
 const AppContent = () => {
+  const location = useLocation();
+  const isLandingPage = location.pathname === "/";
+  
   const {
     isAuthenticated,
     userProfile,
@@ -76,20 +79,24 @@ const AppContent = () => {
         <Route path="*" element={<NotFound />} />
       </Routes>
 
-      {/* Authentication Modals */}
-      <LoginModal
-        isOpen={showLoginModal}
-        onClose={() => setShowLoginModal(false)}
-        onWalletConnect={handleWalletConnect}
-        onGmailLogin={handleGmailLogin}
-      />
+      {/* Authentication Modals - Only show when not on landing page */}
+      {!isLandingPage && (
+        <>
+          <LoginModal
+            isOpen={showLoginModal}
+            onClose={() => setShowLoginModal(false)}
+            onWalletConnect={handleWalletConnect}
+            onGmailLogin={handleGmailLogin}
+          />
 
-      <ProfileCreation
-        isOpen={showProfileCreation}
-        onClose={() => setShowProfileCreation(false)}
-        onSave={handleProfileSave}
-        onBack={handleProfileBack}
-      />
+          <ProfileCreation
+            isOpen={showProfileCreation}
+            onClose={() => setShowProfileCreation(false)}
+            onSave={handleProfileSave}
+            onBack={handleProfileBack}
+          />
+        </>
+      )}
 
       {/* Audio Player */}
       <AudioPlayer />
