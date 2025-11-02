@@ -29,6 +29,7 @@ const AudioPlayer: React.FC = () => {
     playlist,
     currentIndex,
     audioData,
+    visualizerUpdate,
     playTrack,
     pauseTrack,
     resumeTrack,
@@ -155,6 +156,7 @@ const AudioPlayer: React.FC = () => {
           <AudioVisualizer
             audioData={audioData}
             isPlaying={isPlaying}
+            visualizerUpdate={visualizerUpdate}
             className="w-full h-full"
           />
         </div>
@@ -251,6 +253,7 @@ const AudioPlayer: React.FC = () => {
         <AudioVisualizer
           audioData={audioData}
           isPlaying={isPlaying}
+          visualizerUpdate={visualizerUpdate}
           className="w-full h-full"
         />
       </div>

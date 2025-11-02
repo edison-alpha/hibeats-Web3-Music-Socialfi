@@ -3,12 +3,14 @@ import React, { useRef, useEffect } from 'react';
 interface AudioVisualizerProps {
   audioData: Uint8Array | null;
   isPlaying: boolean;
+  visualizerUpdate?: number;
   className?: string;
 }
 
 export const AudioVisualizer: React.FC<AudioVisualizerProps> = ({
   audioData,
   isPlaying,
+  visualizerUpdate = 0,
   className = ''
 }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -51,7 +53,7 @@ export const AudioVisualizer: React.FC<AudioVisualizerProps> = ({
         barHeight
       );
     }
-  }, [audioData, isPlaying]);
+  }, [audioData, isPlaying, visualizerUpdate]);
 
   return (
     <canvas
