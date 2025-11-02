@@ -1,0 +1,354 @@
+import React, { createContext, useContext, useState, useRef, useEffect } from 'react';
+import demoAudio from '@/assets/Akbar Ajie - Jingga.mp3';
+
+export interface Track {
+  id: number;
+  title: string;
+  artist: string;
+  avatar: string;
+  cover: string;
+  genre: string;
+  duration: string;
+  audioUrl?: string; // URL to audio file
+  likes: number;
+  plays?: number;
+  description?: string;
+  bpm?: number;
+  key?: string;
+  price?: string;
+}
+
+interface AudioContextType {
+  currentTrack: Track | null;
+  isPlaying: boolean;
+  currentTime: number;
+  duration: number;
+  volume: number;
+  playlist: Track[];
+  currentIndex: number;
+  audioData: Uint8Array;
+  visualizerUpdate: number;
+  playTrack: (track: Track) => void;
+  pauseTrack: () => void;
+  resumeTrack: () => void;
+  stopTrack: () => void;
+  setVolume: (volume: number) => void;
+  seekTo: (time: number) => void;
+  nextTrack: () => void;
+  previousTrack: () => void;
+  addToPlaylist: (track: Track) => void;
+  removeFromPlaylist: (track: Track) => void;
+  clearPlaylist: () => void;
+  setPlaylist: (tracks: Track[]) => void;
+}
+
+const AudioContext = createContext<AudioContextType | undefined>(undefined);
+
+export const useAudio = () => {
+  const context = useContext(AudioContext);
+  if (!context) {
+    throw new Error('useAudio must be used within an AudioProvider');
+  }
+  return context;
+};
+
+export const AudioProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const [currentTrack, setCurrentTrack] = useState<Track | null>(null);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [currentTime, setCurrentTime] = useState(0);
+  const [duration, setDuration] = useState(0);
+  const [volume, setVolumeState] = useState(0.7);
+  const [playlist, setPlaylistState] = useState<Track[]>([]);
+  const [currentIndex, setCurrentIndex] = useState(-1);
+
+  const [audioData, setAudioData] = useState<Uint8Array<ArrayBuffer>>(new Uint8Array(0) as Uint8Array<ArrayBuffer>);
+  const [visualizerUpdate, setVisualizerUpdate] = useState(0);
+  const analyserRef = useRef<AnalyserNode | null>(null);
+  const animationRef = useRef<number | null>(null);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+  const audioContextRef = useRef<AudioContext | null>(null);
+  const sourceRef = useRef<MediaElementAudioSourceNode | null>(null);
+
+  // Initialize Web Audio API for visualizer
+  const initializeAudioContext = () => {
+    if (!audioContextRef.current && audioRef.current) {
+      try {
+        audioContextRef.current = new (window.AudioContext || (window as any).webkitAudioContext)();
+        analyserRef.current = audioContextRef.current.createAnalyser();
+        analyserRef.current.fftSize = 256;
+        analyserRef.current.smoothingTimeConstant = 0.8;
+
+        sourceRef.current = audioContextRef.current.createMediaElementSource(audioRef.current);
+        sourceRef.current.connect(analyserRef.current);
+        analyserRef.current.connect(audioContextRef.current.destination);
+
+        const bufferLength = analyserRef.current.frequencyBinCount;
+        const dataArray = new Uint8Array(bufferLength) as Uint8Array<ArrayBuffer>;
+        setAudioData(dataArray);
+      } catch (error) {
+        console.error('Error initializing Web Audio API:', error);
+      }
+    }
+  };
+
+  // Update audio data for visualizer
+  const updateAudioData = () => {
+    if (analyserRef.current && audioData.length > 0) {
+      analyserRef.current.getByteFrequencyData(audioData);
+      // Trigger re-render by updating a counter
+      setVisualizerUpdate(prev => prev + 1);
+    }
+    animationRef.current = requestAnimationFrame(updateAudioData);
+  };
+
+  // Start/stop visualizer animation
+  useEffect(() => {
+    if (isPlaying && analyserRef.current) {
+      updateAudioData();
+    } else {
+      if (animationRef.current) {
+        cancelAnimationFrame(animationRef.current);
+      }
+    }
+
+    return () => {
+      if (animationRef.current) {
+        cancelAnimationFrame(animationRef.current);
+      }
+    };
+  }, [isPlaying, audioData.length, visualizerUpdate]);
+
+  // Initialize audio element
+  useEffect(() => {
+    if (!audioRef.current) {
+      audioRef.current = new Audio();
+      audioRef.current.volume = volume;
+
+      // Initialize Web Audio API for visualizer
+      initializeAudioContext();
+
+      // Audio event listeners
+      audioRef.current.addEventListener('loadedmetadata', () => {
+        if (audioRef.current) {
+          setDuration(audioRef.current.duration);
+        }
+      });
+
+      audioRef.current.addEventListener('timeupdate', () => {
+        if (audioRef.current) {
+          setCurrentTime(audioRef.current.currentTime);
+        }
+      });
+
+      audioRef.current.addEventListener('ended', () => {
+        nextTrack();
+      });
+
+      audioRef.current.addEventListener('canplay', () => {
+        // Audio is ready to play, but we handle playing in playTrack function
+        console.log('Audio can play');
+      });
+
+      // Add user interaction handler to resume audio context
+      const handleUserInteraction = () => {
+        if (audioContextRef.current && audioContextRef.current.state === 'suspended') {
+          audioContextRef.current.resume();
+        }
+      };
+
+      // Add event listeners for user interactions
+      document.addEventListener('click', handleUserInteraction);
+      document.addEventListener('touchstart', handleUserInteraction);
+      document.addEventListener('keydown', handleUserInteraction);
+
+      return () => {
+        document.removeEventListener('click', handleUserInteraction);
+        document.removeEventListener('touchstart', handleUserInteraction);
+        document.removeEventListener('keydown', handleUserInteraction);
+      };
+    }
+
+    return () => {
+      if (audioRef.current) {
+        audioRef.current.pause();
+        audioRef.current = null;
+      }
+      if (audioContextRef.current) {
+        audioContextRef.current.close();
+        audioContextRef.current = null;
+      }
+    };
+  }, []);
+
+  // Update volume when it changes
+  useEffect(() => {
+    if (audioRef.current) {
+      audioRef.current.volume = volume;
+    }
+  }, [volume]);
+
+  const playTrack = (track: Track) => {
+    if (!audioRef.current) return;
+
+    // Resume audio context if suspended (required by modern browsers)
+    if (audioContextRef.current && audioContextRef.current.state === 'suspended') {
+      audioContextRef.current.resume();
+    }
+
+    // If it's the same track, just resume
+    if (currentTrack?.id === track.id) {
+      resumeTrack();
+      return;
+    }
+
+    // Set new track
+    setCurrentTrack(track);
+    setCurrentTime(0);
+    setDuration(0);
+
+    // Always use the demo audio file for all tracks
+    const demoAudioUrl = demoAudio;
+
+    if (track.audioUrl) {
+      audioRef.current.src = track.audioUrl;
+    } else {
+      // Use demo audio for tracks without audioUrl
+      audioRef.current.src = demoAudioUrl;
+    }
+
+    audioRef.current.load();
+    setIsPlaying(true);
+
+    // Try to play immediately and handle promise
+    const playPromise = audioRef.current.play();
+    if (playPromise !== undefined) {
+      playPromise
+        .then(() => {
+          // Playback started successfully
+          console.log('Audio playback started');
+        })
+        .catch((error) => {
+          // Auto-play was prevented or other error
+          console.error('Audio playback failed:', error);
+          setIsPlaying(false);
+          // Try to resume audio context and play again
+          if (audioContextRef.current && audioContextRef.current.state === 'suspended') {
+            audioContextRef.current.resume().then(() => {
+              audioRef.current?.play().catch(e => console.error('Retry play failed:', e));
+            });
+          }
+        });
+    }
+
+    // Update current index in playlist
+    const index = playlist.findIndex(t => t.id === track.id);
+    if (index !== -1) {
+      setCurrentIndex(index);
+    }
+  };
+
+  const pauseTrack = () => {
+    if (audioRef.current) {
+      audioRef.current.pause();
+    }
+    setIsPlaying(false);
+  };
+
+  const resumeTrack = () => {
+    if (audioRef.current && currentTrack) {
+      audioRef.current.play();
+      setIsPlaying(true);
+    }
+  };
+
+  const stopTrack = () => {
+    if (audioRef.current) {
+      audioRef.current.pause();
+      audioRef.current.currentTime = 0;
+    }
+    setIsPlaying(false);
+    setCurrentTime(0);
+  };
+
+  const setVolume = (newVolume: number) => {
+    setVolumeState(Math.max(0, Math.min(1, newVolume)));
+  };
+
+  const seekTo = (time: number) => {
+    if (audioRef.current) {
+      audioRef.current.currentTime = time;
+      setCurrentTime(time);
+    }
+  };
+
+  const nextTrack = () => {
+    if (playlist.length > 0 && currentIndex < playlist.length - 1) {
+      const nextIndex = currentIndex + 1;
+      setCurrentIndex(nextIndex);
+      playTrack(playlist[nextIndex]);
+    } else {
+      stopTrack();
+    }
+  };
+
+  const previousTrack = () => {
+    if (playlist.length > 0 && currentIndex > 0) {
+      const prevIndex = currentIndex - 1;
+      setCurrentIndex(prevIndex);
+      playTrack(playlist[prevIndex]);
+    }
+  };
+
+  const addToPlaylist = (track: Track) => {
+    setPlaylistState(prev => {
+      if (!prev.find(t => t.id === track.id)) {
+        return [...prev, track];
+      }
+      return prev;
+    });
+  };
+
+  const removeFromPlaylist = (track: Track) => {
+    setPlaylistState(prev => prev.filter(t => t.id !== track.id));
+  };
+
+  const clearPlaylist = () => {
+    setPlaylistState([]);
+    setCurrentIndex(-1);
+  };
+
+  const setPlaylist = (tracks: Track[]) => {
+    setPlaylistState(tracks);
+    setCurrentIndex(0);
+  };
+
+  const value: AudioContextType = {
+    currentTrack,
+    isPlaying,
+    currentTime,
+    duration,
+    volume,
+    playlist,
+    currentIndex,
+    audioData,
+    visualizerUpdate,
+    playTrack,
+    pauseTrack,
+    resumeTrack,
+    stopTrack,
+    setVolume,
+    seekTo,
+    nextTrack,
+    previousTrack,
+    addToPlaylist,
+    removeFromPlaylist,
+    clearPlaylist,
+    setPlaylist,
+  };
+
+  return (
+    <AudioContext.Provider value={value}>
+      {children}
+    </AudioContext.Provider>
+  );
+};

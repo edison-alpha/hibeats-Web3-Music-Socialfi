@@ -1,12 +1,12 @@
 import { Button } from "@/components/ui/button";
+import logo from "@/assets/hibeats.png";
 
 const Header = () => {
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 px-6 py-4 backdrop-blur-md bg-background/50 border-b border-border/50">
+    <header className="fixed top-0 left-0 right-0 z-50 px-6 py-2 backdrop-blur-md bg-transparent">
       <nav className="container mx-auto flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <div className="w-2 h-2 bg-primary rounded-full animate-pulse-slow"></div>
-          <span className="font-clash font-bold text-xl tracking-tight">hibeats</span>
+        <div className="flex items-center">
+          <img src={logo} alt="hibeats" className="w-17 h-12" />
         </div>
         <Button size="lg" className="font-clash font-semibold">
           Launch App

@@ -1,18 +1,24 @@
+import somniaLogo from "@/assets/somnia.png";
+
 const Partners = () => {
-  const partners = Array(6).fill("somnia");
+  // Create multiple copies for seamless infinite scroll effect
+  const logos = Array(20).fill(somniaLogo);
 
   return (
-    <section className="py-12 border-y border-border/30 bg-muted/20">
+    <section className="py-12 border-y border-border/30 bg-muted/20 overflow-hidden">
       <div className="container mx-auto px-6">
-        <div className="flex items-center justify-center gap-12 md:gap-16 flex-wrap opacity-60">
-          {partners.map((partner, index) => (
-            <div key={index} className="flex items-center gap-2">
-              <div className="w-4 h-4 border border-foreground rounded-sm"></div>
-              <span className="font-clash font-medium text-sm tracking-wider">
-                {partner}
-              </span>
-            </div>
-          ))}
+        <div className="relative">
+          {/* Duplicate the logos for seamless scrolling */}
+          <div className="flex items-center gap-12 animate-scroll-infinite">
+            {logos.concat(logos).map((logo, index) => (
+              <img
+                key={index}
+                src={logo}
+                alt="Somnia"
+                className="h-8 w-auto object-contain flex-shrink-0 filter brightness-0 invert"
+              />
+            ))}
+          </div>
         </div>
       </div>
     </section>

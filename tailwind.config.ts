@@ -91,6 +91,10 @@ export default {
           "0%, 100%": { opacity: "1" },
           "50%": { opacity: "0.5" },
         },
+        "scroll-infinite": {
+          "0%": { transform: "translateX(0)" },
+          "100%": { transform: "translateX(-50%)" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
@@ -98,6 +102,7 @@ export default {
         "float": "float 6s ease-in-out infinite",
         "glow": "glow 2s ease-in-out infinite",
         "pulse-slow": "pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite",
+        "scroll-infinite": "scroll-infinite 20s linear infinite",
       },
       backgroundImage: {
         'gradient-hero': 'var(--gradient-hero)',
