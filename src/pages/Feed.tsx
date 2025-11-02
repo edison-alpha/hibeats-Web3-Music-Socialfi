@@ -51,7 +51,7 @@ import BuyModal from "@/components/BuyModal";
 import TipModal from "@/components/TipModal";
 
 const Feed = () => {
-  const { currentTrack, isPlaying, playTrack, pauseTrack, addToPlaylist } = useAudio();
+  const { currentTrack, isPlaying, playTrack, pauseTrack, addToPlaylist, isAudioReady, resumeTrack } = useAudio();
   const [commentsOpen, setCommentsOpen] = useState<{ [key: number]: boolean }>({});
   const [commentTexts, setCommentTexts] = useState<{ [key: number]: string }>({});
   const [replyTexts, setReplyTexts] = useState<{ [key: string]: string }>({});
@@ -379,8 +379,12 @@ const Feed = () => {
                             className="w-8 h-8 p-0 rounded-full"
                             onClick={(e) => {
                               e.stopPropagation();
-                              if (currentTrack?.id === track.id && isPlaying) {
-                                pauseTrack();
+                              if (currentTrack?.id === track.id && (isPlaying || isAudioReady)) {
+                                if (isPlaying) {
+                                  pauseTrack();
+                                } else if (isAudioReady) {
+                                  resumeTrack();
+                                }
                               } else {
                                 playTrack(track);
                               }
@@ -822,8 +826,12 @@ const Feed = () => {
                       size="lg"
                       className="rounded-full w-16 h-16 bg-white/20 hover:bg-white/30 backdrop-blur-sm border-0"
                       onClick={() => {
-                        if (currentTrack?.id === selectedPost?.id && isPlaying) {
-                          pauseTrack();
+                        if (currentTrack?.id === selectedPost?.id && (isPlaying || isAudioReady)) {
+                          if (isPlaying) {
+                            pauseTrack();
+                          } else if (isAudioReady) {
+                            resumeTrack();
+                          }
                         } else {
                           selectedPost && playTrack(selectedPost);
                         }

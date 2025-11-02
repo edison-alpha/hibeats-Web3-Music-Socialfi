@@ -29,10 +29,11 @@ import album4 from "@/assets/album-4.jpg";
 import bgprofile from "@/assets/bgprofile.jpg";
 import avatar8 from "@/assets/8.png";
 import artistAvatar from "@/assets/8.png";
+import { useAudio } from "@/contexts/AudioContext";
 
 const DetailAlbum = () => {
   const { albumId } = useParams();
-  const [playingTrack, setPlayingTrack] = useState<number | null>(null);
+  const { currentTrack, isPlaying, playTrack, isAudioReady, resumeTrack } = useAudio();
   const [isFollowing, setIsFollowing] = useState(false);
 
   // Mock album data - in real app this would come from API based on albumId
@@ -59,63 +60,111 @@ const DetailAlbum = () => {
     {
       id: 1,
       title: "Opening Sequence",
+      artist: album.artist,
+      avatar: album.cover,
+      cover: album.cover,
+      genre: album.genre,
       duration: "4:12",
-      plays: "156K",
-      likes: 2341
+      likes: 2341,
+      plays: 156000
     },
     {
       id: 2,
       title: "Digital Dreams",
+      artist: album.artist,
+      avatar: album.cover,
+      cover: album.cover,
+      genre: album.genre,
       duration: "3:45",
-      plays: "134K",
-      likes: 1987
+      likes: 1987,
+      plays: 134000
     },
     {
       id: 3,
       title: "Neon Nights",
+      artist: album.artist,
+      avatar: album.cover,
+      cover: album.cover,
+      genre: album.genre,
       duration: "4:23",
-      plays: "189K",
-      likes: 3124
+      likes: 3124,
+      plays: 189000
     },
     {
       id: 4,
       title: "Binary Sunset",
+      artist: album.artist,
+      avatar: album.cover,
+      cover: album.cover,
+      genre: album.genre,
       duration: "3:18",
-      plays: "145K",
-      likes: 2234
+      likes: 2234,
+      plays: 145000
     },
     {
       id: 5,
       title: "Code Breaker",
+      artist: album.artist,
+      avatar: album.cover,
+      cover: album.cover,
+      genre: album.genre,
       duration: "5:02",
-      plays: "167K",
-      likes: 2876
+      likes: 2876,
+      plays: 167000
     },
     {
       id: 6,
       title: "Matrix Reloaded",
+      artist: album.artist,
+      avatar: album.cover,
+      cover: album.cover,
+      genre: album.genre,
       duration: "3:56",
-      plays: "178K",
-      likes: 2987
+      likes: 2987,
+      plays: 178000
     },
     {
       id: 7,
       title: "Final Transmission",
+      artist: album.artist,
+      avatar: album.cover,
+      cover: album.cover,
+      genre: album.genre,
       duration: "4:34",
-      plays: "156K",
-      likes: 2654
+      likes: 2654,
+      plays: 156000
     },
     {
       id: 8,
       title: "System Shutdown",
+      artist: album.artist,
+      avatar: album.cover,
+      cover: album.cover,
+      genre: album.genre,
       duration: "4:15",
-      plays: "143K",
-      likes: 2345
+      likes: 2345,
+      plays: 143000
     }
   ];
 
   const togglePlay = (trackId: number) => {
-    setPlayingTrack(playingTrack === trackId ? null : trackId);
+    const track = albumTracks.find(t => t.id === trackId);
+    if (track) {
+      if (currentTrack?.id === trackId && (isPlaying || isAudioReady)) {
+        if (isPlaying) {
+          // If currently playing this track, pause it
+          // Note: We don't have direct pause access here, but playTrack will handle it
+          return;
+        } else if (isAudioReady) {
+          // If audio is ready but not playing, resume it
+          resumeTrack();
+          return;
+        }
+      } else {
+        // Play the selected track
+        playTrack(track);
+      }
+    }
   };
 
   const formatNumber = (num: number) => {
@@ -274,10 +323,10 @@ const DetailAlbum = () => {
                       className="w-8 h-8 p-0 text-white opacity-0 group-hover:opacity-100 transition-opacity"
                       onClick={(e) => {
                         e.stopPropagation();
-                        setPlayingTrack(track.id);
+                        togglePlay(track.id);
                       }}
                     >
-                      {playingTrack === track.id ? (
+                      {currentTrack?.id === track.id && isPlaying ? (
                         <Pause className="w-4 h-4" />
                       ) : (
                         <Play className="w-4 h-4 ml-0.5" />
