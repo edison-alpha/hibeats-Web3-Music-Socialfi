@@ -26,7 +26,7 @@ const Footer = () => {
           <div className="space-y-4">
             <div className="flex items-center gap-2">
               <Music className="w-6 h-6 text-primary" />
-              <span className="font-clash font-bold text-lg">HiBeats</span>
+              <span className="font-clash font-semibold text-lg">HiBeats</span>
             </div>
             <p className="text-sm text-muted-foreground leading-relaxed">
               The ultimate music social platform where creators and fans connect through AI-powered music creation and blockchain technology.
@@ -113,25 +113,25 @@ const Footer = () => {
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-12">
           <Card className="border-border/30 bg-background/50">
             <CardContent className="p-4 text-center">
-              <div className="text-2xl font-clash font-bold text-primary mb-1">10K+</div>
+              <div className="text-2xl font-clash font-semibold text-primary mb-1">10K+</div>
               <div className="text-sm text-muted-foreground">Active Users</div>
             </CardContent>
           </Card>
           <Card className="border-border/30 bg-background/50">
             <CardContent className="p-4 text-center">
-              <div className="text-2xl font-clash font-bold text-primary mb-1">50K+</div>
+              <div className="text-2xl font-clash font-semibold text-primary mb-1">50K+</div>
               <div className="text-sm text-muted-foreground">Tracks Created</div>
             </CardContent>
           </Card>
           <Card className="border-border/30 bg-background/50">
             <CardContent className="p-4 text-center">
-              <div className="text-2xl font-clash font-bold text-primary mb-1">1M+</div>
+              <div className="text-2xl font-clash font-semibold text-primary mb-1">1M+</div>
               <div className="text-sm text-muted-foreground">Streams</div>
             </CardContent>
           </Card>
           <Card className="border-border/30 bg-background/50">
             <CardContent className="p-4 text-center">
-              <div className="text-2xl font-clash font-bold text-primary mb-1">4.8</div>
+              <div className="text-2xl font-clash font-semibold text-primary mb-1">4.8</div>
               <div className="text-sm text-muted-foreground">User Rating</div>
             </CardContent>
           </Card>
@@ -141,7 +141,7 @@ const Footer = () => {
         <div className="text-center mb-12">
           <Card className="border-primary/20 bg-gradient-to-r from-primary/5 to-secondary/5">
             <CardContent className="p-8">
-              <h3 className="font-clash font-bold text-2xl mb-4">
+              <h3 className="font-clash font-semibold text-2xl mb-4">
                 Ready to Create Your Music?
               </h3>
               <p className="text-muted-foreground mb-6 max-w-md mx-auto">

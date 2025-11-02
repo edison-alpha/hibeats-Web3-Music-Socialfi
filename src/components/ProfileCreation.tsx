@@ -151,7 +151,7 @@ const ProfileCreation = ({ isOpen, onClose, onSave, onBack }: ProfileCreationPro
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
         <CardHeader className="text-center pb-6">
-          <CardTitle className="text-2xl font-clash font-bold">
+          <CardTitle className="text-2xl font-clash font-semibold">
             Create your profile
           </CardTitle>
         </CardHeader>
@@ -161,7 +161,7 @@ const ProfileCreation = ({ isOpen, onClose, onSave, onBack }: ProfileCreationPro
             /* Name Step */
             <div className="text-center space-y-6">
               <div>
-                <h2 className="text-3xl font-clash font-bold mb-2">What's your name?</h2>
+                <h2 className="text-3xl font-clash font-semibold mb-2">What's your name?</h2>
                 <p className="text-muted-foreground">Let's get to know you better</p>
               </div>
               

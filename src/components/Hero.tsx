@@ -24,7 +24,7 @@ const Hero = () => {
       {/* Content */}
       <div className="container mx-auto px-6 py-32 relative z-10 text-center">
         <div className="max-w-4xl mx-auto space-y-8">
-          <h1 className="font-clash font-bold text-5xl md:text-7xl lg:text-8xl leading-tight">
+          <h1 className="font-clash font-semibold text-5xl md:text-7xl lg:text-8xl leading-tight">
             Create your own song with AI
             <br />
             <span className="inline-block mt-2">

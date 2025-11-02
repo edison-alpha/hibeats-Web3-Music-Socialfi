@@ -15,7 +15,7 @@ const LoginModal = ({ isOpen, onClose, onWalletConnect, onGmailLogin }: LoginMod
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="max-w-md">
         <CardHeader className="text-center pb-6">
-          <CardTitle className="text-2xl font-clash font-bold">
+          <CardTitle className="text-2xl font-clash font-semibold">
             Welcome to HiBeats
           </CardTitle>
           <p className="text-muted-foreground">

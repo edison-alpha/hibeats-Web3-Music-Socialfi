@@ -841,7 +841,7 @@ const Feed = () => {
               {/* Track Info */}
               <div className="space-y-4">
                   <div>
-                    <h2 className="font-clash font-bold text-2xl mb-2">{selectedPost?.title}</h2>
+                    <h2 className="font-clash font-semibold text-2xl mb-2">{selectedPost?.title}</h2>
                     <div className="flex items-center gap-3 mb-3">
                       <Link to={`/artist/${selectedPost?.id}`} className="flex items-center gap-3 hover:opacity-80 transition-opacity">
                         <Avatar className="w-8 h-8">

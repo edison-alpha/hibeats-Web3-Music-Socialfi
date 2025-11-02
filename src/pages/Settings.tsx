@@ -72,7 +72,7 @@ const Settings = () => {
         <div className="container mx-auto px-6 py-6">
           {/* Header */}
           <div className="mb-8">
-            <h1 className="font-clash font-bold text-4xl mb-2">Settings</h1>
+            <h1 className="font-clash font-semibold text-4xl mb-2">Settings</h1>
             <p className="text-muted-foreground text-lg">Manage your account and preferences</p>
           </div>
 

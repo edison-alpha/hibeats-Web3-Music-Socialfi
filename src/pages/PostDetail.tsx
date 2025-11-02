@@ -101,7 +101,7 @@ const PostDetail = () => {
               <ArrowLeft className="w-5 h-5" />
               Back
             </button>
-            <h2 className="font-clash font-bold text-lg">Post</h2>
+            <h2 className="font-clash font-semibold text-lg">Post</h2>
           </div>
         </div>
       </header>

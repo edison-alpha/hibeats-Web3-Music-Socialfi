@@ -181,7 +181,7 @@ const MyPlaylist = () => {
           {/* Header */}
           <div className="flex items-center justify-between mb-6">
             <div>
-              <h1 className="font-clash font-bold text-3xl mb-2">My Playlists</h1>
+              <h1 className="font-clash font-semibold text-3xl mb-2">My Playlists</h1>
               <p className="text-muted-foreground">
                 {playlists.length} playlists • {totalTracks} tracks • {formatDuration(totalDuration)} total
               </p>

@@ -226,7 +226,7 @@ const ArtistProfile = () => {
             <div className="relative">
               <Avatar className="w-32 h-32 md:w-40 md:h-40 ring-4 ring-background/50 shadow-2xl">
                 <AvatarImage src={artistAvatar} />
-                <AvatarFallback className="bg-primary/10 text-primary font-bold text-4xl md:text-5xl">
+                <AvatarFallback className="bg-primary/10 text-primary font-semibold text-4xl md:text-5xl">
                   {artist.avatar}
                 </AvatarFallback>
               </Avatar>
@@ -236,7 +236,7 @@ const ArtistProfile = () => {
             <div className="flex-1 space-y-4">
               <div>
                 <div className="flex items-center gap-3 mb-2">
-                  <h1 className="font-clash font-bold text-3xl md:text-4xl text-foreground">{artist.name}</h1>
+                  <h1 className="font-clash font-semibold text-3xl md:text-4xl text-foreground">{artist.name}</h1>
                   {artist.isVerified && (
                     <img src={verifiedIcon} alt="Verified" className="w-5 h-5" />
                   )}
@@ -247,15 +247,15 @@ const ArtistProfile = () => {
               {/* Stats */}
               <div className="flex gap-6 text-sm">
                 <div className="text-center">
-                  <p className="font-bold text-xl text-foreground">{formatNumber(artist.followers)}</p>
+                  <p className="font-semibold text-xl text-foreground">{formatNumber(artist.followers)}</p>
                   <p className="text-muted-foreground">Followers</p>
                 </div>
                 <div className="text-center">
-                  <p className="font-bold text-xl text-foreground">{formatNumber(artist.following)}</p>
+                  <p className="font-semibold text-xl text-foreground">{formatNumber(artist.following)}</p>
                   <p className="text-muted-foreground">Following</p>
                 </div>
                 <div className="text-center">
-                  <p className="font-bold text-xl text-foreground">{artist.stats.totalTracks}</p>
+                  <p className="font-semibold text-xl text-foreground">{artist.stats.totalTracks}</p>
                   <p className="text-muted-foreground">Tracks</p>
                 </div>
               </div>
@@ -309,7 +309,7 @@ const ArtistProfile = () => {
           <div className="space-y-4">
             <div className="flex items-center justify-between mb-6">
               <div className="flex items-center gap-4">
-                <h2 className="font-clash font-bold text-2xl">Releases</h2>
+                <h2 className="font-clash font-semibold text-2xl">Releases</h2>
                 <div className="flex gap-2">
                   <Button
                     variant={activeTab === 'releases' ? 'outline' : 'ghost'}
@@ -394,7 +394,7 @@ const ArtistProfile = () => {
                         </div>
 
                         <div className="flex items-center justify-between translate-y-full opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300">
-                          <span className="text-lg font-bold text-primary">{track.price}</span>
+                          <span className="text-lg font-semibold text-primary">{track.price}</span>
                           <Button className="gap-2 bg-primary hover:bg-primary/90" size="sm">
                             <ShoppingCart className="w-3 h-3" />
                             Buy Now
@@ -455,7 +455,7 @@ const ArtistProfile = () => {
                         </div>
 
                         <div className="flex items-center justify-between translate-y-full opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300">
-                          <span className="text-lg font-bold text-primary">{collection.price}</span>
+                          <span className="text-lg font-semibold text-primary">{collection.price}</span>
                           <Button className="gap-2 bg-primary hover:bg-primary/90" size="sm">
                             <ShoppingCart className="w-3 h-3" />
                             Buy Now

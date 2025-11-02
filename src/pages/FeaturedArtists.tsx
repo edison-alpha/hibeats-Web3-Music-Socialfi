@@ -252,7 +252,7 @@ const FeaturedArtists = () => {
         <div className="container mx-auto px-6 py-6">
           {/* Header */}
           <div className="mb-8">
-            <h1 className="font-clash font-bold text-3xl mb-1">Featured Artists</h1>
+            <h1 className="font-clash font-semibold text-3xl mb-1">Featured Artists</h1>
             <p className="text-muted-foreground text-base">Discover talented creators and musicians in our community</p>
           </div>
 
@@ -299,7 +299,7 @@ const FeaturedArtists = () => {
                   <div className="flex flex-col items-center text-center mb-4">
                     <Avatar className="w-20 h-20 mb-3">
                       <AvatarImage src={avatarImage} />
-                      <AvatarFallback className="bg-primary/10 text-primary font-bold text-xl">
+                      <AvatarFallback className="bg-primary/10 text-primary font-semibold text-xl">
                         {artist.avatar}
                       </AvatarFallback>
                     </Avatar>

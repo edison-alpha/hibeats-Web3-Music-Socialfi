@@ -249,7 +249,7 @@ const LinerNoteDetail = () => {
           <div className="container mx-auto px-6 py-12">
             <div className="text-center">
               <BookOpen className="w-16 h-16 text-muted-foreground mx-auto mb-4" />
-              <h1 className="font-clash font-bold text-2xl mb-2">Note Not Found</h1>
+              <h1 className="font-clash font-semibold text-2xl mb-2">Note Not Found</h1>
               <p className="text-muted-foreground mb-6">The liner note you're looking for doesn't exist.</p>
               <Button asChild>
                 <Link to="/liner-notes">
@@ -305,7 +305,7 @@ const LinerNoteDetail = () => {
               </div>
             </div>
 
-            <h1 className="font-clash font-bold text-3xl lg:text-4xl mb-4 leading-tight">
+            <h1 className="font-clash font-semibold text-3xl lg:text-4xl mb-4 leading-tight">
               {note.title}
             </h1>
 

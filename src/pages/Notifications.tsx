@@ -159,7 +159,7 @@ const Notifications = () => {
             <div className="lg:col-span-2">
               {/* Header */}
               <div className="flex items-center justify-between mb-6">
-                <h1 className="font-clash font-bold text-2xl">Notifications</h1>
+                <h1 className="font-clash font-semibold text-2xl">Notifications</h1>
                 <Button
                   variant="outline"
                   size="sm"

@@ -257,7 +257,7 @@ const LinerNotes = () => {
         <div className="container mx-auto px-6 py-6">
           {/* Header */}
           <div className="mb-8">
-            <h1 className="font-clash font-bold text-3xl mb-1">Liner Notes</h1>
+            <h1 className="font-clash font-semibold text-3xl mb-1">Liner Notes</h1>
             <p className="text-muted-foreground text-base">Stories, insights, and behind-the-scenes content from our artists</p>
           </div>
 
@@ -308,7 +308,7 @@ const LinerNotes = () => {
                             </div>
                           </div>
 
-                          <h3 className="font-clash font-bold text-3xl lg:text-4xl mb-4 leading-tight">{featuredNote.title}</h3>
+                          <h3 className="font-clash font-semibold text-3xl lg:text-4xl mb-4 leading-tight">{featuredNote.title}</h3>
                           <p className="text-white/90 text-lg mb-6 line-clamp-2 max-w-2xl">{featuredNote.excerpt}</p>
 
                           <div className="flex flex-wrap items-center gap-6 text-sm text-white/80 mb-8">

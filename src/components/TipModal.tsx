@@ -203,7 +203,7 @@ const TipModal = ({ isOpen, onClose, track, onTip }: TipModalProps) => {
                 <div className="p-4 bg-gradient-to-r from-primary/5 to-primary/10 dark:from-primary/10 dark:to-primary/20 rounded-xl border-2 border-primary/20 dark:border-primary/30">
                   <div className="flex justify-between items-center">
                     <span className="font-semibold text-sm text-primary">Tip Amount</span>
-                    <span className="font-bold text-2xl text-primary">
+                    <span className="font-semibold text-2xl text-primary">
                       {selectedAmount} SOMI
                     </span>
                   </div>
@@ -216,7 +216,7 @@ const TipModal = ({ isOpen, onClose, track, onTip }: TipModalProps) => {
                   <Wallet className="w-4 h-4 text-muted-foreground" />
                   <span className="font-medium text-sm">Your Balance</span>
                 </div>
-                <span className="font-bold text-lg">1,250 SOMI</span>
+                <span className="font-semibold text-lg">1,250 SOMI</span>
               </div>
 
               {/* Action Buttons */}

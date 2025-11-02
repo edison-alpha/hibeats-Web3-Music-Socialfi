@@ -173,7 +173,7 @@ const Beats = () => {
         <div className="container mx-auto px-6 py-6">
           {/* Header */}
           <div className="mb-8">
-            <h1 className="font-clash font-bold text-3xl mb-1">Released Beats</h1>
+            <h1 className="font-clash font-semibold text-3xl mb-1">Released Beats</h1>
             <p className="text-muted-foreground text-base">Discover and purchase the latest released tracks</p>
           </div>
 
@@ -291,7 +291,7 @@ const Beats = () => {
                         </div>
 
                         <div className="text-right">
-                          <div className="text-xl font-bold text-primary mb-1">
+                          <div className="text-xl font-semibold text-primary mb-1">
                             {beat.price}
                           </div>
                           <div className="flex items-center gap-1 text-xs text-muted-foreground">

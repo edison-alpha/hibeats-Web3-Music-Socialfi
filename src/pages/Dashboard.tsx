@@ -137,7 +137,7 @@ const Dashboard = () => {
           <div className="mb-8">
             <div className="flex items-center justify-between">
               <div>
-                <h1 className="font-clash font-bold text-4xl mb-2">Dashboard</h1>
+                <h1 className="font-clash font-semibold text-4xl mb-2">Dashboard</h1>
                 <p className="text-muted-foreground text-lg">Welcome back, {userProfile?.name || "Artist"}!</p>
               </div>
               <div className="flex gap-3">
@@ -167,7 +167,7 @@ const Dashboard = () => {
                     <div className="flex items-center justify-between">
                       <div>
                         <p className="text-sm font-medium text-muted-foreground">{stat.title}</p>
-                        <p className="text-2xl font-bold">{stat.value}</p>
+                        <p className="text-2xl font-semibold">{stat.value}</p>
                         <p className={`text-xs ${stat.color} font-medium`}>{stat.change} from last month</p>
                       </div>
                       <Icon className={`w-8 h-8 ${stat.color}`} />

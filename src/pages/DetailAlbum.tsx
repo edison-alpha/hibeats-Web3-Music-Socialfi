@@ -178,7 +178,7 @@ const DetailAlbum = () => {
             <div className="flex-1 space-y-4">
               <div>
                 <div className="flex items-center gap-3 mb-2">
-                  <h1 className="font-clash font-bold text-3xl md:text-4xl text-foreground">{album.title}</h1>
+                  <h1 className="font-clash font-semibold text-3xl md:text-4xl text-foreground">{album.title}</h1>
                   <Badge variant="secondary" className="text-xs bg-primary/10 text-primary border-primary/20">
                     {album.type}
                   </Badge>
@@ -189,15 +189,15 @@ const DetailAlbum = () => {
               {/* Album Stats */}
               <div className="flex gap-6 text-sm">
                 <div className="text-center">
-                  <p className="font-bold text-xl text-foreground">{album.stats.totalPlays}</p>
+                  <p className="font-semibold text-xl text-foreground">{album.stats.totalPlays}</p>
                   <p className="text-muted-foreground">Plays</p>
                 </div>
                 <div className="text-center">
-                  <p className="font-bold text-xl text-foreground">{formatNumber(album.stats.totalLikes)}</p>
+                  <p className="font-semibold text-xl text-foreground">{formatNumber(album.stats.totalLikes)}</p>
                   <p className="text-muted-foreground">Likes</p>
                 </div>
                 <div className="text-center">
-                  <p className="font-bold text-xl text-foreground">{album.stats.totalTracks}</p>
+                  <p className="font-semibold text-xl text-foreground">{album.stats.totalTracks}</p>
                   <p className="text-muted-foreground">Tracks</p>
                 </div>
               </div>
@@ -248,7 +248,7 @@ const DetailAlbum = () => {
           {/* Left Side - Tracks List */}
           <div className="lg:col-span-2 space-y-4">
             <div className="flex items-center justify-between mb-6">
-              <h2 className="font-clash font-bold text-2xl">Tracks</h2>
+              <h2 className="font-clash font-semibold text-2xl">Tracks</h2>
               <Badge variant="outline" className="text-sm">
                 {album.stats.totalTracks} tracks • {album.totalLength}
               </Badge>
@@ -332,7 +332,7 @@ const DetailAlbum = () => {
               <CardContent className="p-6">
                 <div className="space-y-4">
                   <div className="text-center">
-                    <p className="text-2xl font-bold text-primary mb-1">2.5 ETH</p>
+                    <p className="text-2xl font-semibold text-primary mb-1">2.5 ETH</p>
                     <p className="text-sm text-muted-foreground">Complete Album</p>
                   </div>
                   <Button className="w-full gap-2 bg-primary hover:bg-primary/90" size="lg">
@@ -403,7 +403,7 @@ const DetailAlbum = () => {
                             <div className="flex items-start gap-3">
                               <Avatar className="w-12 h-12 ring-2 ring-primary/20">
                                 <AvatarImage src={supporter.avatarImage || ""} />
-                                <AvatarFallback className="bg-gradient-to-br from-primary/20 to-secondary/20 text-primary font-bold text-sm">
+                                <AvatarFallback className="bg-gradient-to-br from-primary/20 to-secondary/20 text-primary font-semibold text-sm">
                                   {supporter.avatar}
                                 </AvatarFallback>
                               </Avatar>
@@ -437,13 +437,13 @@ const DetailAlbum = () => {
                         <div className="relative">
                           <Avatar className="w-12 h-12 ring-2 ring-primary/20 hover:ring-primary/40 transition-all duration-200 group-hover:scale-105">
                             <AvatarImage src={supporter.avatarImage || ""} />
-                            <AvatarFallback className="bg-gradient-to-br from-primary/20 to-secondary/20 text-primary font-bold text-sm hover:from-primary/30 hover:to-secondary/30 transition-all duration-200">
+                            <AvatarFallback className="bg-gradient-to-br from-primary/20 to-secondary/20 text-primary font-semibold text-sm hover:from-primary/30 hover:to-secondary/30 transition-all duration-200">
                               {supporter.avatar}
                             </AvatarFallback>
                           </Avatar>
                           {index < 3 && (
                             <div className="absolute -top-1 -right-1 w-5 h-5 bg-primary rounded-full flex items-center justify-center shadow-lg">
-                              <span className="text-xs font-bold text-primary-foreground">{index + 1}</span>
+                              <span className="text-xs font-semibold text-primary-foreground">{index + 1}</span>
                             </div>
                           )}
                         </div>

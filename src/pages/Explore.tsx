@@ -636,7 +636,7 @@ const Explore = () => {
                   <Card key={track.id} className="hover:shadow-sm transition-all duration-300 border-border/20 bg-card/50 backdrop-blur-sm rounded-2xl">
                     <CardContent className="p-4">
                       <div className="flex items-center gap-4">
-                        <div className="flex items-center justify-center w-8 h-8 rounded-full bg-primary/10 text-primary font-bold text-sm">
+                        <div className="flex items-center justify-center w-8 h-8 rounded-full bg-primary/10 text-primary font-semibold text-sm">
                           {index + 1}
                         </div>
                         <img

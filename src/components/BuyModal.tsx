@@ -100,7 +100,7 @@ const BuyModal = ({ isOpen, onClose, track }: BuyModalProps) => {
                 <Separator />
                 <div className="flex justify-between items-center">
                   <span className="font-semibold">Total</span>
-                  <span className="font-bold text-xl text-primary">{price} SOMI</span>
+                  <span className="font-semibold text-xl text-primary">{price} SOMI</span>
                 </div>
               </div>
 
@@ -191,7 +191,7 @@ const BuyModal = ({ isOpen, onClose, track }: BuyModalProps) => {
               {/* Total */}
               <div className="flex justify-between items-center p-4 bg-muted/30 rounded-lg">
                 <span className="font-semibold">Total to Pay</span>
-                <span className="font-bold text-xl text-primary">{price} SOMI</span>
+                <span className="font-semibold text-xl text-primary">{price} SOMI</span>
               </div>
 
               {/* Action Buttons */}
