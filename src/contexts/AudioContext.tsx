@@ -61,6 +61,8 @@ export const AudioProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   const [playlist, setPlaylistState] = useState<Track[]>([]);
   const [currentIndex, setCurrentIndex] = useState(-1);
 
+  const [isAudioReady, setIsAudioReady] = useState(false);
+  const [hasUserInteracted, setHasUserInteracted] = useState(false);
   const [audioData, setAudioData] = useState<Uint8Array<ArrayBuffer>>(new Uint8Array(0) as Uint8Array<ArrayBuffer>);
   const [visualizerUpdate, setVisualizerUpdate] = useState(0);
   const analyserRef = useRef<AnalyserNode | null>(null);
@@ -150,21 +152,29 @@ export const AudioProvider: React.FC<{ children: React.ReactNode }> = ({ childre
       });
 
       // Add user interaction handler to resume audio context
-      const handleUserInteraction = () => {
+      const handleUserInteraction = async () => {
+        setHasUserInteracted(true);
+
         if (audioContextRef.current && audioContextRef.current.state === 'suspended') {
-          audioContextRef.current.resume();
+          try {
+            await audioContextRef.current.resume();
+            console.log('Audio context resumed');
+          } catch (error) {
+            console.error('Failed to resume audio context:', error);
+          }
         }
       };
 
-      // Add event listeners for user interactions
-      document.addEventListener('click', handleUserInteraction);
-      document.addEventListener('touchstart', handleUserInteraction);
-      document.addEventListener('keydown', handleUserInteraction);
+      // Add event listeners for user interactions - more comprehensive for mobile
+      const events = ['click', 'touchstart', 'touchend', 'mousedown', 'mouseup', 'keydown', 'scroll', 'focus'];
+      events.forEach(event => {
+        document.addEventListener(event, handleUserInteraction, { passive: true });
+      });
 
       return () => {
-        document.removeEventListener('click', handleUserInteraction);
-        document.removeEventListener('touchstart', handleUserInteraction);
-        document.removeEventListener('keydown', handleUserInteraction);
+        events.forEach(event => {
+          document.removeEventListener(event, handleUserInteraction);
+        });
       };
     }
 
@@ -187,12 +197,18 @@ export const AudioProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     }
   }, [volume]);
 
-  const playTrack = (track: Track) => {
+  const playTrack = async (track: Track) => {
     if (!audioRef.current) return;
 
     // Resume audio context if suspended (required by modern browsers)
     if (audioContextRef.current && audioContextRef.current.state === 'suspended') {
-      audioContextRef.current.resume();
+      try {
+        await audioContextRef.current.resume();
+        console.log('Audio context resumed for track:', track.title);
+      } catch (error) {
+        console.error('Failed to resume audio context:', error);
+        return;
+      }
     }
 
     // If it's the same track, just resume
@@ -217,27 +233,34 @@ export const AudioProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     }
 
     audioRef.current.load();
-    setIsPlaying(true);
 
-    // Try to play immediately and handle promise
-    const playPromise = audioRef.current.play();
-    if (playPromise !== undefined) {
-      playPromise
-        .then(() => {
-          // Playback started successfully
-          console.log('Audio playback started');
-        })
-        .catch((error) => {
-          // Auto-play was prevented or other error
-          console.error('Audio playback failed:', error);
-          setIsPlaying(false);
-          // Try to resume audio context and play again
-          if (audioContextRef.current && audioContextRef.current.state === 'suspended') {
-            audioContextRef.current.resume().then(() => {
-              audioRef.current?.play().catch(e => console.error('Retry play failed:', e));
-            });
-          }
-        });
+    // On mobile, only attempt to play if user has interacted
+    // This prevents autoplay blocking
+    if (hasUserInteracted || !/Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+      // Try to play with better mobile handling
+      try {
+        const playPromise = audioRef.current.play();
+        if (playPromise !== undefined) {
+          await playPromise;
+          setIsPlaying(true);
+          console.log('Audio playback started successfully for:', track.title);
+        } else {
+          // Older browsers that don't return a promise
+          setIsPlaying(true);
+          console.log('Audio playback started (legacy) for:', track.title);
+        }
+      } catch (error) {
+        console.error('Audio playback failed:', error);
+        setIsPlaying(false);
+
+        // On mobile, this is expected due to autoplay policies
+        // The audio will play when user interacts with play button
+        console.log('Autoplay prevented - waiting for user interaction');
+      }
+    } else {
+      // On mobile without user interaction, just prepare the audio
+      console.log('Mobile device detected - waiting for user interaction before playing');
+      setIsAudioReady(true);
     }
 
     // Update current index in playlist
@@ -254,10 +277,43 @@ export const AudioProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     setIsPlaying(false);
   };
 
-  const resumeTrack = () => {
+  const resumeTrack = async () => {
     if (audioRef.current && currentTrack) {
-      audioRef.current.play();
-      setIsPlaying(true);
+      try {
+        // Ensure audio context is running
+        if (audioContextRef.current && audioContextRef.current.state === 'suspended') {
+          await audioContextRef.current.resume();
+        }
+
+        // If audio is ready but not playing (mobile case), start playing
+        if (isAudioReady && !isPlaying) {
+          const playPromise = audioRef.current.play();
+          if (playPromise !== undefined) {
+            await playPromise;
+            setIsPlaying(true);
+            setIsAudioReady(false); // Reset ready state
+            console.log('Audio started from ready state');
+          } else {
+            setIsPlaying(true);
+            setIsAudioReady(false);
+            console.log('Audio started from ready state (legacy)');
+          }
+        } else {
+          // Normal resume
+          const playPromise = audioRef.current.play();
+          if (playPromise !== undefined) {
+            await playPromise;
+            setIsPlaying(true);
+            console.log('Audio resumed successfully');
+          } else {
+            setIsPlaying(true);
+            console.log('Audio resumed (legacy)');
+          }
+        }
+      } catch (error) {
+        console.error('Failed to resume audio:', error);
+        setIsPlaying(false);
+      }
     }
   };
 

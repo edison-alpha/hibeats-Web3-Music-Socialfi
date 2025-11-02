@@ -75,6 +75,7 @@ const AudioPlayer: React.FC = () => {
     if (isPlaying) {
       pauseTrack();
     } else if (currentTrack) {
+      // On mobile, if audio is ready but not playing, this will trigger playback
       resumeTrack();
     }
   };
